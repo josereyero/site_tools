@@ -44,6 +44,7 @@ function site_tools_drush_command() {
  */
 function drush_site_tools_site_enable_master() {
   _drush_site_tools_include();
+  drush_print(dt("Checking configuration for project: @project", ['@project' => SiteTools::get('project_name')]));
   if ($modules = SiteTools::get('master_modules')) {
     if (SiteTools::checkModules($modules)) {
       ModuleHelper::enableModules($modules);
@@ -62,6 +63,7 @@ function drush_site_tools_site_enable_master() {
  */
 function drush_site_tools_site_enable_environment() {
   _drush_site_tools_include();
+  drush_print(dt("Checking environment configuration for: @project/@environment", ['@project' => SiteTools::get('project_name'), '@environment' => SiteTools::get('site_env')]));
   if ($modules = SiteTools::get('environment_modules')) {
     if (SiteTools::checkModules($modules)) {
       ModuleHelper::enableModules($modules);
@@ -123,4 +125,3 @@ function _drush_site_tools_include() {
   $version = 'drupal' . drush_drupal_major_version();
   require_once __DIR__ . '/site_tools.' . $version . '.inc';
 }
-

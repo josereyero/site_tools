@@ -19,6 +19,24 @@ abstract class ModuleHelperBase {
   static $module_data;
 
   /**
+   * Enable modules.
+   *
+   * For some reason enabling already enabled modules through Drupal API in D8
+   * doesn't enable dependencies.
+   *
+   * @param array $module_list
+   *   List of module names.
+   *
+   * @return boolean
+   *   TRUE if successful.
+   */
+  public static function enableModules(array $module_list) {
+    $result = drush_invoke('pm-enable', $module_list);
+    static::resetModuleData();
+    return $result;
+  }
+
+  /**
    * Get module data.
    *
    * @param string $name
@@ -43,7 +61,7 @@ abstract class ModuleHelperBase {
    * Get all module data.
    */
   protected static function resetModuleData() {
-    unset(static::$module_data);
+    static::$module_data = NULL;
     //system_rebuild_module_data();
   }
 
@@ -69,16 +87,6 @@ abstract class ModuleHelperBase {
    */
   public static abstract function isModuleEnabled($name);
 
-  /**
-   * Enable modules.
-   *
-   * @param array $module_list
-   *   List of module names.
-   *
-   * @return boolean
-   *   TRUE if successful.
-   */
-  public static abstract function enableModules(array $module_list);
 
   /**
    * Disable modules.

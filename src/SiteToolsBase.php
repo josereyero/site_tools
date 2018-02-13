@@ -89,6 +89,12 @@ abstract class SiteToolsBase {
       $command = array_merge($command, [[], []]);
       list($name, $arguments, $opts) = $command;
 
+      drush_print(dt("Invoke: drush @name @arguments @options",[
+       '@name' => $name,
+       '@arguments' => implode(' ', $arguments),
+       '@options' => implode(' ', $opts),
+      ]));
+
       if ($opts) {
         // We need to use drush_invoke_process() for the options to work.
         $result = drush_invoke_process('@self', $name, $arguments, $opts);
@@ -104,6 +110,7 @@ abstract class SiteToolsBase {
         $return = FALSE;
         break;
       }
+      drush_print();
     }
 
     return $return;
@@ -111,6 +118,9 @@ abstract class SiteToolsBase {
 
   /**
    * Check modules before enabling them.
+   *
+   * @return boolean
+   *   TRUE if modules exist.
    */
   public static function checkModules(array $module_list) {
     $found = $missing = array();

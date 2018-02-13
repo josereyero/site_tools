@@ -21,10 +21,12 @@ class ModuleHelper extends ModuleHelperBase {
   /**
    * Enable modules.
    */
+  /*
   public static function enableModules(array $module_list) {
-    \Drupal::service('module_installer')->install($modules);
+    \Drupal::service('module_installer')->install($module_list);
     static::resetModuleData();
   }
+  */
 
   /**
    * Disable modules.
@@ -46,16 +48,19 @@ class ModuleHelper extends ModuleHelperBase {
    * Checks whether module is installed.
    */
   public static function isModuleInstalled($name) {
-    $module = static::getModule($name);
-    return $module && $module->schema_version > -1;
+    try {
+      return (boolean)\Drupal::moduleHandler()->getModule($name);
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
   }
 
   /**
    * Checks whether module is installed.
    */
   public static function isModuleEnabled($name) {
-    $module = static::getModule($name);
-    return $module && !empty($module->status);
+    return static::isModuleInstalled($name);
   }
 
   /**
@@ -63,7 +68,7 @@ class ModuleHelper extends ModuleHelperBase {
    */
   public static function getModuleInfo($name) {
     if (!isset(static::$module_info[$name])) {
-      if ($extension = $this->getModuleData($name)) {
+      if ($extension = static::getModuleData($name)) {
         static::$module_info[$name] = \Drupal::service('info_parser')->parse($extension->getPathname());
       }
     }

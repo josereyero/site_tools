@@ -27,9 +27,11 @@ class ModuleHelper extends ModuleHelperBase {
   /**
    * Enable modules.
    */
+  /*
   public static function enableModules(array $module_list) {
     return module_enable($module_list);
   }
+  */
 
   /**
    * Disable modules.

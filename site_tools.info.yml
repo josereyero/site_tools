@@ -1,0 +1,9 @@
+name: Site Tools
+description: 'Drush and features tools for managing site and environment configuration.'
+type: module
+core: 8.x
+version: 8.x-1.0
+package: 'Site Tools'
+dependencies:
+  - features
+  
