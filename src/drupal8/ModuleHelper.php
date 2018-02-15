@@ -16,22 +16,22 @@ class ModuleHelper extends ModuleHelperBase {
    *
    * @var array().
    */
-  static $module_info;
+  protected $module_info;
 
   /**
    * Enable modules.
    */
   /*
-  public static function enableModules(array $module_list) {
+  public function enableModules(array $module_list) {
     \Drupal::service('module_installer')->install($module_list);
-    static::resetModuleData();
+    $this->resetModuleData();
   }
   */
 
   /**
    * Disable modules.
    */
-  public static function disableModules(array $module_list) {
+  public function disableModules(array $module_list) {
     // Modules cannot be really disabled in D8
     //module_disable($module_list);
   }
@@ -39,15 +39,15 @@ class ModuleHelper extends ModuleHelperBase {
   /**
    * Uninstall modules.
    */
-  public static function uninstallModules(array $module_list) {
+  public function uninstallModules(array $module_list) {
     \Drupal::service('module_installer')->uninstall($module_list);
-    static::resetModuleData();
+    $this->resetModuleData();
   }
 
   /**
    * Checks whether module is installed.
    */
-  public static function isModuleInstalled($name) {
+  public function isModuleInstalled($name) {
     try {
       return (boolean)\Drupal::moduleHandler()->getModule($name);
     }
@@ -59,20 +59,20 @@ class ModuleHelper extends ModuleHelperBase {
   /**
    * Checks whether module is installed.
    */
-  public static function isModuleEnabled($name) {
-    return static::isModuleInstalled($name);
+  public function isModuleEnabled($name) {
+    return $this->isModuleInstalled($name);
   }
 
   /**
    * Gets module info array.
    */
-  public static function getModuleInfo($name) {
-    if (!isset(static::$module_info[$name])) {
-      if ($extension = static::getModuleData($name)) {
-        static::$module_info[$name] = \Drupal::service('info_parser')->parse($extension->getPathname());
+  public function getModuleInfo($name) {
+    if (!isset($this->module_info[$name])) {
+      if ($extension = $this->getModuleData($name)) {
+        $this->module_info[$name] = \Drupal::service('info_parser')->parse($extension->getPathname());
       }
     }
-    return static::$module_info[$name];
+    return $this->module_info[$name];
   }
 
 }

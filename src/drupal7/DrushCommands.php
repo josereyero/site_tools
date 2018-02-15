@@ -2,31 +2,12 @@
 
 namespace Drupal\site_tools\drupal7;
 
-use Drupal\site_tools\SiteToolsBase;
+use Drupal\site_tools\DrushCommandsBase;
 
 /**
  * Drupal 7 Site Tools API
  */
-class SiteTools extends SiteToolsBase {
-
-  /**
-   * Gets site settings.
-   *
-   * @return array
-   */
-  protected static function getSiteSettings() {
-    return variable_get('site_tools', array());
-  }
-
-  /**
-   * Gets module helper.
-   *
-   * @return string
-   *   Class name (\Drupal\site_tools\ModuleHelperBase)
-   */
-  protected static function moduleHelper() {
-    return '\Drupal\site_tools\drupal7\ModuleHelper';
-  }
+class DrushCommands extends DrushCommandsBase {
 
   /**
    * Invoke drush site update commands.

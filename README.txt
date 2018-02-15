@@ -19,6 +19,7 @@ Requirements
 * Drupal 7 or Drupal 8, https://drupal.org
 * Drush 8.x, http://docs.drush.org/en/8.x/
 * Features, https://www.drupal.org/project/features
+* For Drupal 7: X Autoload or other tool providing PSR-4 support, https://www.drupal.org/project/xautoload
 
 Installation
 ------------

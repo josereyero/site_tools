@@ -16,7 +16,7 @@ abstract class ModuleHelperBase {
    *
    * @var array().
    */
-  static $module_data;
+  protected $module_data;
 
   /**
    * Enable modules.
@@ -30,9 +30,9 @@ abstract class ModuleHelperBase {
    * @return boolean
    *   TRUE if successful.
    */
-  public static function enableModules(array $module_list) {
+  public function enableModules(array $module_list) {
     $result = drush_invoke('pm-enable', $module_list);
-    static::resetModuleData();
+    $this->resetModuleData();
     return $result;
   }
 
@@ -45,23 +45,23 @@ abstract class ModuleHelperBase {
    * @return mixed
    *   Extension object if module name is provided. List of extensions otherwise.
    */
-  public static function getModuleData($name = NULL) {
-    if (!isset(static::$module_data)) {
-      static::$module_data = system_rebuild_module_data();
+  public function getModuleData($name = NULL) {
+    if (!isset($this->module_data)) {
+      $this->module_data = system_rebuild_module_data();
     }
     if ($name) {
-      return isset(static::$module_data[$name]) ? static::$module_data[$name] : NULL;
+      return isset($this->module_data[$name]) ? $this->module_data[$name] : NULL;
     }
     else {
-      return static::$module_data[$name];
+      return $this->module_data[$name];
     }
   }
 
   /**
    * Get all module data.
    */
-  protected static function resetModuleData() {
-    static::$module_data = NULL;
+  protected function resetModuleData() {
+    $this->module_data = NULL;
     //system_rebuild_module_data();
   }
 
@@ -74,7 +74,7 @@ abstract class ModuleHelperBase {
    * @return boolean
    *   TRUE if installed.
    */
-  public static abstract function isModuleInstalled($name);
+  public abstract function isModuleInstalled($name);
 
   /**
    * Checks whether module is enabled.
@@ -85,7 +85,7 @@ abstract class ModuleHelperBase {
    * @return boolean
    *   TRUE if enabled.
    */
-  public static abstract function isModuleEnabled($name);
+  public abstract function isModuleEnabled($name);
 
 
   /**
@@ -97,7 +97,7 @@ abstract class ModuleHelperBase {
    * @return boolean
    *   TRUE if successful.
    */
-  public static abstract function disableModules(array $module_list);
+  public abstract function disableModules(array $module_list);
 
 
   /**
@@ -109,12 +109,12 @@ abstract class ModuleHelperBase {
    * @return boolean
    *   TRUE if successful.
    */
-  public static abstract function uninstallModules(array $module_list);
+  public abstract function uninstallModules(array $module_list);
 
   /**
    * Gets module info array.
    *
    * @return array
    */
-  public static abstract function getModuleInfo($name);
+  public abstract function getModuleInfo($name);
 }

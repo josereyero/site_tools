@@ -8,6 +8,8 @@
  * Provides some tool to enable disable additional modules defined in settings.php
  */
 
+use Drupal\site_tools\SiteTools;
+
 /**
  * Implements hook_drush_command().
  */
@@ -43,11 +45,11 @@ function site_tools_drush_command() {
  * Drush command: Enable master module.
  */
 function drush_site_tools_site_enable_master() {
-  _drush_site_tools_include();
+
   drush_print(dt("Checking configuration for project: @project", ['@project' => SiteTools::get('project_name')]));
   if ($modules = SiteTools::get('master_modules')) {
     if (SiteTools::checkModules($modules)) {
-      ModuleHelper::enableModules($modules);
+      SiteTools::moduleHelper()->enableModules($modules);
       SiteTools::checkDependencies($modules);
     }
   }
@@ -62,11 +64,11 @@ function drush_site_tools_site_enable_master() {
  * The environment name must be defined in $settings['environment']
  */
 function drush_site_tools_site_enable_environment() {
-  _drush_site_tools_include();
+
   drush_print(dt("Checking environment configuration for: @project/@environment", ['@project' => SiteTools::get('project_name'), '@environment' => SiteTools::get('site_env')]));
   if ($modules = SiteTools::get('environment_modules')) {
     if (SiteTools::checkModules($modules)) {
-      ModuleHelper::enableModules($modules);
+      SiteTools::moduleHelper()->enableModules($modules);
       SiteTools::checkDependencies($modules);
     }
   }
@@ -84,9 +86,7 @@ function drush_site_tools_site_enable_environment() {
  * - Revert features.
  */
 function drush_site_tools_site_update() {
-  _drush_site_tools_include();
-
-  if (SiteTools::invokeSiteUpdateCommands()) {
+  if (SiteTools::drushCommands()::invokeSiteUpdateCommands()) {
     drush_print();
     drush_print("Site update completed.");
   }
@@ -98,7 +98,7 @@ function drush_site_tools_site_update() {
  * Invoke drush project-reload
  */
 function drush_site_tools_site_reload() {
-  _drush_site_tools_include();
+
   $project_name = SiteTools::get('project_name');
   $site_env = SiteTools::get('site_env');
 
@@ -111,17 +111,10 @@ function drush_site_tools_site_reload() {
  * Invoke drush project-backup
  */
 function drush_site_tools_site_backup() {
-  _drush_site_tools_include();
+
   $project_name = SiteTools::get('project_name');
   $site_env = SiteTools::get('site_env');
 
   drush_invoke('project-backup', [$project_name, $site_env]);
 }
 
-/**
- * Include libraries for this version.
- */
-function _drush_site_tools_include() {
-  $version = 'drupal' . drush_drupal_major_version();
-  require_once __DIR__ . '/site_tools.' . $version . '.inc';
-}
