@@ -33,8 +33,15 @@ function site_tools_drush_command() {
       //'core' => ['8+'],
   ];
 
+  $items['site-set-maintenance-mode'] = [
+      'description' => 'Enable / disable maintenance mode',
+      'arguments' => [
+          'value' => 'Enable (1) or disable (0)',
+      ],
+  ];
+
   $items['site-reload'] = [
-    'description' => 'Reload target site from source site and run site-update',
+    'description' => 'Reload target site from source site.',
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_ROOT,
   ];
 
@@ -75,6 +82,18 @@ function drush_site_tools_site_enable_environment() {
   else {
     return drush_set_error('SITE_NOT_FOUND', "No site environment modules found.");
   }
+}
+
+/**
+ * Drush command callback: site-set-maintenance-mode
+ *
+ * - Clear caches
+ * - Run db updates
+ * - Enable master and environment modules.
+ * - Revert features.
+ */
+function drush_site_tools_site_set_maintenance_mode($value) {
+  SiteTools::drushCommands()::setMaintenanceMode($value);
 }
 
 /**

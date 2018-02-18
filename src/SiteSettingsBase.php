@@ -59,10 +59,10 @@ abstract class SiteSettingsBase {
 
       // Check variables.
       if (empty($settings['project_name'])) {
-        throw \Exception("Project name (project_name) is not defined in settings.php");
+        throw new \Exception("Project name (project_name) is not defined in settings.php");
       }
       if (empty($settings['site_env'])) {
-        throw \Exception("Site environment (site_env) is not defined in settings.php");
+        throw new \Exception("Site environment (site_env) is not defined in settings.php");
       }
 
       // Add environment + project settings

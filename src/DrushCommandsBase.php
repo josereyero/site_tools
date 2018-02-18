@@ -6,6 +6,17 @@ namespace Drupal\site_tools;
  * Drush Commands Helper base class
  */
 abstract class DrushCommandsBase {
+
+  /**
+   * Get commands to set maintenance mode.
+   *
+   * @param boolean $value
+   *   Enable (1) / Disable (0)
+   * @return array
+   *   Drush commands.
+   */
+  public static abstract function setMaintenanceMode($value);
+
   /**
    * Run multiple drush commands through drush invoke.
    *
