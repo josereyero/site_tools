@@ -43,6 +43,7 @@ class DrushCommands extends DrushCommandsBase {
     // Revert features if module is enabled.
     if (module_exists('features')) {
       $commands[] = ['features-revert-all'];
+      $commands[] = ['cache-clear', ['all']];
     }
     return static::invokeCommands($commands);
   }
