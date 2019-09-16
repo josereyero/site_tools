@@ -1,0 +1,5 @@
+services:
+  site_tools.commands:
+    class: \Drupal\site_tools\Commands\SiteToolsCommands
+    tags:
+      - { name: drush.command }

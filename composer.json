@@ -1,18 +1,28 @@
 {
-    "name": "reyero/site_tools",
-    "type": "drupal-module",
-    "description": "Drupal / Drush development and deployment tools",
-    "keywords": ["drupal","drush","development"],
-    "homepage": "https://github.com/josereyero/site_tools",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Jose Reyero",
-            "homepage": "https://reyero.net",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php": ">=7.0"
-    }
+	"name" : "reyero/site_tools",
+	"type" : "drupal-module",
+	"description" : "Drupal / Drush development and deployment tools",
+	"keywords" : [
+		"drupal",
+		"drush",
+		"development"
+	],
+	"homepage" : "https://github.com/josereyero/site_tools",
+	"license" : "GPL-3.0-only",
+	"authors" : [{
+			"name" : "Jose Reyero",
+			"homepage" : "https://reyero.net"
+		}
+	],
+	"require" : {
+		"php" : ">=7.0",
+		"reyero/drupal-tools" : "8.x"
+	},
+	"extra" : {
+		"drush" : {
+			"services" : {
+				"drush.services.yml" : "^9"
+			}
+		}
+	}
 }

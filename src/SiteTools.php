@@ -2,6 +2,9 @@
 
 namespace Drupal\site_tools;
 
+use Drupal\site_tools\Util\ModuleHelper;
+use Drupal\site_tools\Util\SiteSettings;
+
 /**
  * Read only settings that are initialized with the class.
  *
@@ -20,31 +23,16 @@ class SiteTools {
   /**
    * Site and environment settings.
    *
-   * @var \Drupal\site_tools\SiteSettingsBase
+   * @var \Drupal\site_tools\SiteSettingsInterface
    */
   static $site_settings;
 
   /**
    * Module helper object.
    *
-   * @var \Drupal\site_tools\ModuleHelperBase
+   * @var \Drupal\site_tools\Util\ModuleHelper
    */
   static $module_helper;
-
-  /**
-   * Returns a variable / setting.
-   *
-   * @param string $name
-   *   The name of the setting to return.
-   * @param mixed $default
-   *   (optional) The default value to use if this setting is not set.
-   *
-   * @return mixed
-   *   The value of the setting, the provided default if not set.
-   */
-  public static function get($name, $default = NULL) {
-    return static::siteSettings()->getVariable($name, $default);
-  }
 
   /**
    * Check modules before enabling them.
@@ -151,12 +139,11 @@ class SiteTools {
   /**
    * Gets site settings.
    *
-   * @return  \Drupal\site_tools\SiteSettingsBase
+   * @return  \Drupal\site_tools\SiteSettingsInterface
    */
   public static function siteSettings() {
     if (!isset(static::$site_settings)) {
-      $class = static::getDrupalVersionClass('SiteSettings');
-      static::$site_settings = new $class();
+      static::$site_settings = new SiteSettings();
     }
     return static::$site_settings;
   }
@@ -164,39 +151,13 @@ class SiteTools {
   /**
    * Gets module helper.
    *
-   * @return string
-   *   Class name (\Drupal\site_tools\ModuleHelperBase)
+   * @return \Drupal\site_tools\Util\ModuleHelper
    */
   public static function moduleHelper() {
     if (!isset(static::$module_helper)) {
-      $class = static::getDrupalVersionClass('ModuleHelper');
-      static::$module_helper = new $class();
+      static::$module_helper = new ModuleHelper();
     }
     return static::$module_helper;
   }
 
-  /**
-   * Gets Drush commands class
-   *
-   * @return string
-   *   Class name
-   */
-  public static function drushCommands() {
-    return static::getDrupalVersionClass('DrushCommands');
-  }
-
-  /**
-   * Gets actual class name depending on Drupal version.
-   *
-   * @paramm string $class
-   *   Class name without namespace.
-   */
-  protected static function getDrupalVersionClass($class_name) {
-    if (defined("DRUPAL_CORE_COMPATIBILITY") && DRUPAL_CORE_COMPATIBILITY == '7.x') {
-      return "\\Drupal\\site_tools\\drupal7\\" . $class_name;
-    }
-    else {
-      return "\\Drupal\\site_tools\\drupal8\\" . $class_name;
-    }
-  }
 }
